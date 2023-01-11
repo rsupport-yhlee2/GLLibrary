@@ -3,29 +3,24 @@ package com.example.gllibrary
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.opengl.GLES30.*
+import android.util.Log
 import java.nio.IntBuffer
 
 class CameraTexture {
-    private var id: Int? = null
+    private lateinit var mTextures: IntArray
 
-    fun getId() = id ?: throw IllegalStateException("Call load() before using texture")
+    fun getId() = mTextures[0]
 
     fun load() {
-        if (id != null) {
-            return
-        }
+        mTextures = IntArray(1)
+        GLES20.glGenTextures(1, mTextures, 0)
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextures[0])
 
-        val id = IntBuffer.allocate(1)
-        glGenTextures(1, id)
-        id[0].also {
-            this.id = it
-            glBindTexture(GL_TEXTURE_2D, it)
-        }
-        glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, getId())
-        glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-        glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-        glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST)
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST)
+        Log.d("CameraTexture", "[EDWARDS] texture id : " + mTextures[0])
 
     }
 }

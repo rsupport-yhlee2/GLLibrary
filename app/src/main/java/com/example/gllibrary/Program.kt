@@ -11,6 +11,7 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private var uniforms = mutableMapOf<String, Int>()
     fun getAttributeLocation(name: String) = attributes.getValue(name)
     fun getUniformLocation(name: String) = uniforms.getValue(name)
+    fun getProgram() = program
     fun setInt(location: Int, i: Int) = glUniform1i(location, i)
     fun setInt(location: String, i: Int) = glUniform1i(getUniformLocation(location), i)
     fun setFloat(location: Int, f: Float) = glUniform1f(location, f)
