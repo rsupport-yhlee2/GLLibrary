@@ -34,16 +34,6 @@ class VertexData(
             )
         )
     }
-    fun addAttribute(location: Int, size: Int, buffer: FloatBuffer) {
-        attributes.add(
-            Attribute(
-                location = location,
-                size = size,
-                offset = 0,
-                floatBuffer = buffer
-            )
-        )
-    }
 
     fun bind() {
         val vbo = IntBuffer.allocate(1)
@@ -76,28 +66,16 @@ class VertexData(
 
     private fun applyAttributes() = attributes.forEach { attribute ->
         glEnableVertexAttribArray(attribute.location)
-        attribute.floatBuffer?.let { buffer ->
-            glVertexAttribPointer(
-                attribute.location,
-                attribute.size,
-                GL_FLOAT,
-                false,
-                (attribute.stride ?: stride) * Float.SIZE_BYTES,
-                buffer
-            )
-        } ?: kotlin.run {
-            glVertexAttribPointer(
-                attribute.location,
-                attribute.size,
-                GL_FLOAT,
-                false,
-                (attribute.stride ?: stride) * Float.SIZE_BYTES,
-                attribute.offset * Float.SIZE_BYTES
-            )
-        }
+        glVertexAttribPointer(
+            attribute.location,
+            attribute.size,
+            GL_FLOAT,
+            false,
+            (attribute.stride ?: stride) * Float.SIZE_BYTES,
+            attribute.offset * Float.SIZE_BYTES
+        )
         attribute.divisor?.also { glVertexAttribDivisor(attribute.location, it) }
     }
-
     private fun bindIndices() = indices?.takeIf { it.capacity() > 0 }?.also {
         val ebo = IntBuffer.allocate(1)
         glGenBuffers(1, ebo)
@@ -115,7 +93,20 @@ class VertexData(
         val size: Int,
         val offset: Int,
         val stride: Int? = null,
-        val divisor: Int? = null,
-        val floatBuffer: FloatBuffer? = null
+        val divisor: Int? = null
     )
+
+    companion object{
+        fun applyAttributes(location: Int,size: Int,buffer: FloatBuffer) {
+            glEnableVertexAttribArray(location)
+            glVertexAttribPointer(
+                location,
+                size,
+                GL_FLOAT,
+                false,
+                0,
+                buffer
+            )
+        }
+    }
 }
