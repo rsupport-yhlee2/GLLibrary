@@ -34,6 +34,16 @@ class VertexData(
             )
         )
     }
+    fun addAttribute(location: Int, size: Int, buffer: FloatBuffer) {
+        attributes.add(
+            Attribute(
+                location = location,
+                size = size,
+                offset = 0,
+                floatBuffer = buffer
+            )
+        )
+    }
 
     fun bind() {
         val vbo = IntBuffer.allocate(1)
@@ -66,14 +76,25 @@ class VertexData(
 
     private fun applyAttributes() = attributes.forEach { attribute ->
         glEnableVertexAttribArray(attribute.location)
-        glVertexAttribPointer(
-            attribute.location,
-            attribute.size,
-            GL_FLOAT,
-            false,
-            (attribute.stride ?: stride) * Float.SIZE_BYTES,
-            attribute.offset * Float.SIZE_BYTES
-        )
+        attribute.floatBuffer?.let { buffer ->
+            glVertexAttribPointer(
+                attribute.location,
+                attribute.size,
+                GL_FLOAT,
+                false,
+                (attribute.stride ?: stride) * Float.SIZE_BYTES,
+                buffer
+            )
+        } ?: kotlin.run {
+            glVertexAttribPointer(
+                attribute.location,
+                attribute.size,
+                GL_FLOAT,
+                false,
+                (attribute.stride ?: stride) * Float.SIZE_BYTES,
+                attribute.offset * Float.SIZE_BYTES
+            )
+        }
         attribute.divisor?.also { glVertexAttribDivisor(attribute.location, it) }
     }
 
@@ -94,6 +115,7 @@ class VertexData(
         val size: Int,
         val offset: Int,
         val stride: Int? = null,
-        val divisor: Int? = null
+        val divisor: Int? = null,
+        val floatBuffer: FloatBuffer? = null
     )
 }
