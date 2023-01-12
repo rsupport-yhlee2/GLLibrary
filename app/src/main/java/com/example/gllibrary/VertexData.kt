@@ -98,7 +98,7 @@ class VertexData(
 
     companion object{
         //기능추가
-        fun applyAttributes(location: Int,size: Int,buffer: FloatBuffer) {
+        fun apply(location: Int,size: Int,buffer: FloatBuffer) {
             glEnableVertexAttribArray(location)
             glVertexAttribPointer(
                 location,

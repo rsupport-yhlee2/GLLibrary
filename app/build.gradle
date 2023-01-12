@@ -38,7 +38,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.rsupport-yhlee2' //your git id
                 artifactId = 'GLLibrary' //your-repository
-                version = '1.0.7' // As same as the Tag
+                version = '1.0.8' // As same as the Tag
             }
         }
     }
