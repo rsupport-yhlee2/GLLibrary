@@ -16,7 +16,6 @@ class VBOData(
     ) : this(vertex.toFloatBuffer(), drawMode, stride)
 
     private var vboId = -1
-    private val vbo = IntBuffer.allocate(1)
     private val attributes = mutableListOf<Attribute>()
 
     fun addAttribute(location: Int, size: Int, offset: Int) {
@@ -32,6 +31,7 @@ class VBOData(
     fun getVBO() = vboId
 
     fun bind() {
+        val vbo = IntBuffer.allocate(1)
         glGenBuffers(GL_ARRAY_BUFFER, vbo)
         vbo[0].let {
             glBindBuffer(GL_ARRAY_BUFFER, it)
