@@ -1,7 +1,9 @@
 package com.example.gllibrary
 
+import android.opengl.GLES20.GL_FLOAT
 import android.opengl.GLES20.GL_STATIC_DRAW
 import android.opengl.GLES30.*
+import glm_.size
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
@@ -22,6 +24,8 @@ class VertexData(
     private val attributes = mutableListOf<Attribute>()
 
     private var vaoId: Int? = null
+
+    private var vboId: Int? = null
 
     fun addAttribute(attribute: Attribute) = attributes.add(attribute)
 
@@ -76,6 +80,7 @@ class VertexData(
         )
         attribute.divisor?.also { glVertexAttribDivisor(attribute.location, it) }
     }
+
     private fun bindIndices() = indices?.takeIf { it.capacity() > 0 }?.also {
         val ebo = IntBuffer.allocate(1)
         glGenBuffers(1, ebo)
@@ -96,9 +101,9 @@ class VertexData(
         val divisor: Int? = null
     )
 
-    companion object{
+    companion object {
         //기능추가
-        fun apply(location: Int,size: Int,buffer: FloatBuffer) {
+        fun apply(location: Int, size: Int, buffer: FloatBuffer) {
             glEnableVertexAttribArray(location)
             glVertexAttribPointer(
                 location,

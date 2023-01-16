@@ -96,7 +96,7 @@ fun IntArray.toIntBuffer(): IntBuffer = ByteBuffer
         it.put(this).position(0)
     }
 
-internal fun loadBitmap(context: Context, @RawRes textureId: Int) = BitmapFactory.decodeResource(
+fun loadBitmap(context: Context, @RawRes textureId: Int) = BitmapFactory.decodeResource(
     context.resources,
     textureId,
     BitmapFactory.Options().apply { inScaled = false })
