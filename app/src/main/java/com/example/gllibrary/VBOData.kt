@@ -32,7 +32,7 @@ class VBOData(
 
     fun bind() {
         val vbo = IntBuffer.allocate(1)
-        glGenBuffers(GL_ARRAY_BUFFER, vbo)
+        glGenBuffers(1, vbo)
         vbo[0].let {
             glBindBuffer(GL_ARRAY_BUFFER, it)
             vboId = it
