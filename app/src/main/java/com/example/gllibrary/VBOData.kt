@@ -53,8 +53,8 @@ class VBOData(
             attribute.size,
             GL_FLOAT,
             false,
-            stride,
-            attribute.offset
+            stride * Float.SIZE_BYTES,
+            attribute.offset * Float.SIZE_BYTES
         )
     }
 
