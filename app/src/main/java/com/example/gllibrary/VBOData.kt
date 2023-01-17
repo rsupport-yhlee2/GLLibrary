@@ -43,6 +43,7 @@ class VBOData(
             vertex,
             drawMode
         )
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
     }
 
     fun applyAttributes() = attributes.forEach { attribute ->
